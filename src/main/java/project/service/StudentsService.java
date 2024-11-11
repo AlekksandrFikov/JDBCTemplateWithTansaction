@@ -1,6 +1,5 @@
 package project.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,12 +9,14 @@ import project.repository.StudentRepostory;
 @Service
 public class StudentsService {
 	
-	@Autowired
 	JdbcTemplate jdbcTemplate;
-	
-	
-	@Autowired	
 	StudentRepostory studentRepostory;
+	
+	public StudentsService(JdbcTemplate jdbcTemplate, StudentRepostory studentRepostory) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.studentRepostory = studentRepostory;
+	}
+	
 	
 	@Transactional
 	public void addStudents() {
