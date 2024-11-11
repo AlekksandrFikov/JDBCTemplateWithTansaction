@@ -21,17 +21,22 @@ public class StudentsService {
 	}
 
 	@Transactional
-	public void addStudents() {
-		addTenStudents();
+	public void addStudents() throws Exception {
+		addTenStudents(new RuntimeException("Generated exception. It's Ok!. See results in DataBase..."));
 	}
 
 	@Transactional(noRollbackFor = { RuntimeException.class })
-	public void addStudentsWithNoRollbackForNullPointerException() {
-		addTenStudents();
+	public void addStudentsWithNoRollbackForNullPointerException() throws Exception {
+		addTenStudents(new NullPointerException("Generated exception. It's Ok!. See results in DataBase..."));
+	}
+
+	@Transactional(rollbackFor = { Exception.class })
+	public void addStudentsWithRollbackForException() throws Exception {
+		addTenStudents(new Exception("Generated exception. It's Ok!. See results in DataBase..."));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void addTenStudents() {
+	private void addTenStudents(Exception ex) throws Exception {
 
 		jdbcTemplate.execute("TRUNCATE `student_test_db`.`stud`;");
 
@@ -42,8 +47,8 @@ public class StudentsService {
 			else
 				studentRepostory.addStudentWithinNewTransaction("Name" + i);
 
-			if (i == 10)
-				throw new NullPointerException("Generated exception. It's Ok!. See results in DataBase...");
+			if (i == 10 && ex != null)
+				throw ex;
 		}
 	}
 
