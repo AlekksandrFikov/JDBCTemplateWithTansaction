@@ -14,12 +14,13 @@ public class StudentRepostory {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
-	@Transactional(propagation = Propagation.NESTED)
+	@Transactional(	propagation = Propagation.NESTED)
 	public void addStudentWithinNestedTransaction(String name) {
 		
 		String sql = "INSERT INTO `student_test_db`.`stud` (`name`) VALUES (?);";
 		jdbcTemplate.update(sql, name);		
 	}
+		
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void addStudentWithinNewTransaction(String name) {
